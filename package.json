@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "create-dirty": "node scripts/create-dirty-files.js"
+    "make-dirty": "node scripts/make-dirty-files.js"
   },
   "keywords": [],
   "author": "",
