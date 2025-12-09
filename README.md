@@ -1,50 +1,56 @@
-# Lefthook Monorepo Demo (Pattern 3)
+# Lefthook Monorepo Demo (パターン3)
 
-This repository demonstrates **Pattern 3: Dynamic Dispatching with Scripts** for Lefthook in a monorepo, as described in [this article](https://zenn.dev/atamaplus/articles/monorepo-lefthook).
+このリポジトリは、[こちらの記事](https://zenn.dev/atamaplus/articles/monorepo-lefthook)で紹介されている、モノレポにおけるLefthookの**パターン3: スクリプトによる動的ディスパッチ**のデモです。
 
-## Structure
+## 構成
 
-- `packages/ui`: A sample package
-- `apps/web`: A sample app
-- `scripts/dispatch-by-package.js`: The script that dispatches commands to the appropriate package
-- `lefthook.yml`: The single configuration file invoking the script
+- `packages/`:
+    - `ui`: サンプルパッケージ (末尾カンマなし, シングルクォート)
+    - `logger`: サンプルパッケージ (アロー関数括弧省略)
+- `apps/`:
+    - `web`: サンプルアプリ (インデント: スペース2, セミコロンなし)
+    - `admin`: サンプルアプリ (行長: 120)
+- `scripts/dispatch-by-package.js`: コマンドを適切なパッケージに振り分けるスクリプト
+- `lefthook.yml`: スクリプトを呼び出す単一の設定ファイル
+- `biome.jsonc`: ルートの共通設定ファイル
+- `**/biome.jsonc`: 各パッケージの個別設定ファイル（ルートを継承・上書き）
 
-## How it works
+## 仕組み
 
-1. `lefthook.yml` captures staged files and passes them to `scripts/dispatch-by-package.js`.
-2. The script groups files by their package (finding the nearest `package.json`).
-3. For each package, it runs the `check:staged` script defined in that package's `package.json`.
+1. `lefthook.yml` がステージされたファイルをキャプチャし、`scripts/dispatch-by-package.js` に渡します。
+2. スクリプトはファイルをパッケージごとにグループ化します（最も近い `package.json` を探します）。
+3. 各パッケージに対して、そのパッケージの `package.json` で定義された `check:staged` スクリプトを実行します。
 
-## How to try
+## 試し方
 
-1. Install dependencies:
+1. 依存関係のインストール:
    ```bash
    pnpm install
    ```
 
-2. Enable git hooks:
+2. Gitフックの有効化:
    ```bash
    npx lefthook install
    ```
 
-3. Create a file with formatting issues (e.g., single quotes) in a package:
+3. パッケージ内にフォーマット違反を含むファイルを作成（例: `apps/web` はセミコロン禁止設定）:
    ```bash
-   echo "const a = 'needs format';" > packages/ui/dirty.ts
+   echo "const a = 1;" > apps/web/src/dirty.ts
    ```
 
-4. Stage the file:
+4. ファイルをステージ:
    ```bash
-   git add packages/ui/dirty.ts
+   git add apps/web/src/dirty.ts
    ```
 
-5. Run the hook (or just commit):
+5. フックを実行（またはコミット）:
    ```bash
    npx lefthook run pre-commit
    ```
 
-   You should see output indicating that `biome check --write` ran specifically in `packages/ui` and fixed the file.
+   `apps/web` パッケージ内でのみ `biome check --write` が実行され、ファイルが修正される（セミコロンが削除される）のが確認できるはずです。
 
-## Configuration
+## 設定
 
 - **`lefthook.yml`**:
   ```yaml
@@ -55,10 +61,9 @@ This repository demonstrates **Pattern 3: Dynamic Dispatching with Scripts** for
         run: node scripts/dispatch-by-package.js check:staged {staged_files}
   ```
 
-- **`packages/ui/package.json`**:
+- **各 `package.json`**:
   ```json
   "scripts": {
     "check:staged": "biome check --write"
   }
   ```
-
