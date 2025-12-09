@@ -23,27 +23,22 @@
 
 ## 試し方
 
-1. 依存関係のインストール:
+1. 依存関係のインストール（Gitフックも自動でインストールされます）:
    ```bash
    pnpm install
    ```
 
-2. Gitフックの有効化:
-   ```bash
-   npx lefthook install
-   ```
-
-3. パッケージ内にフォーマット違反を含むファイルを作成（例: `apps/web` はセミコロン禁止設定）:
+2. パッケージ内にフォーマット違反を含むファイルを作成（例: `apps/web` はセミコロン禁止設定）:
    ```bash
    echo "const a = 1;" > apps/web/src/dirty.ts
    ```
 
-4. ファイルをステージ:
+3. ファイルをステージ:
    ```bash
    git add apps/web/src/dirty.ts
    ```
 
-5. フックを実行（またはコミット）:
+4. フックを実行（またはコミット）:
    ```bash
    npx lefthook run pre-commit
    ```
