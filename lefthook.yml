@@ -1,0 +1,6 @@
+pre-commit:
+  commands:
+    check:
+      glob: "*.{js,ts,jsx,tsx,json,jsonc}"
+      run: node scripts/dispatch-by-package.js check:staged {staged_files}
+

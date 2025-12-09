@@ -1,0 +1,10 @@
+{
+  "name": "@demo/ui",
+  "version": "0.0.0",
+  "scripts": {
+    "check:staged": "biome check --write"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.8"
+  }
+}
