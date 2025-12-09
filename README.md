@@ -28,14 +28,15 @@
    pnpm install
    ```
 
-2. パッケージ内にフォーマット違反を含むファイルを作成（例: `apps/web` はセミコロン禁止設定）:
+2. テスト用のフォーマット違反ファイルを作成:
    ```bash
-   echo "const a = 1;" > apps/web/src/dirty.ts
+   pnpm create-dirty
    ```
+   これにより、各パッケージの設定にわざと違反したファイル（`dirty.ts`）が作成されます。
 
 3. ファイルをステージ:
    ```bash
-   git add apps/web/src/dirty.ts
+   git add .
    ```
 
 4. フックを実行（またはコミット）:
@@ -43,7 +44,7 @@
    npx lefthook run pre-commit
    ```
 
-   `apps/web` パッケージ内でのみ `biome check --write` が実行され、ファイルが修正される（セミコロンが削除される）のが確認できるはずです。
+   各パッケージの設定（インデント、クォート、セミコロンなど）に従って、それぞれのファイルが自動修正されるのが確認できるはずです。
 
 ## 設定
 
