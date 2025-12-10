@@ -1,10 +1,9 @@
 export interface User {
   id: number;
   username: string;
-  role: "admin" | "editor" | "viewer";
+  role: 'admin' | 'editor' | 'viewer';
 }
 
 export const isAdmin = (user: User): boolean => {
-  return user.role === "admin";
+  return user.role === 'admin';
 };
-

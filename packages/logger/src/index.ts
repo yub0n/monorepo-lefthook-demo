@@ -1,10 +1,9 @@
-import { formatMessage } from "./formatter";
+import { formatMessage } from './formatter';
 
 export const logInfo = (message: string): void => {
-  console.log(formatMessage("INFO", message));
+  console.log(formatMessage('INFO', message));
 };
 
 export const logError = (message: string): void => {
-  console.error(formatMessage("ERROR", message));
+  console.error(formatMessage('ERROR', message));
 };
-

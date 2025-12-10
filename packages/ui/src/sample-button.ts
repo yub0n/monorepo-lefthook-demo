@@ -6,4 +6,3 @@ export interface ButtonProps {
 export const createButton = (props: ButtonProps): string => {
   return `<button onclick="(${props.onClick.toString()})()">${props.label}</button>`;
 };
-
